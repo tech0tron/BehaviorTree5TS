@@ -13,7 +13,7 @@
 --]]
 
 local TreeCreator = {}
-local BehaviorTree3 = require(script.BehaviorTree3)
+local BehaviorTree3 = require(script.Parent.BehaviorTree3)
 
 local Trees = {}
 local SourceTasks = {}
