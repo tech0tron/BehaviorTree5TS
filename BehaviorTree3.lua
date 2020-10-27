@@ -432,7 +432,7 @@ end
 
 ------- TREE CONSTRUCTOR -------
 
-function BehaviorTree:new(params)
+function BehaviorTree.new(params)
 	local tree = params.tree
 	local nodes = {}
 	

@@ -2,7 +2,7 @@ export type SUCCESS = 1;
 export type FAIL = 2;
 export type RUNNING = 3;
 
-type TREE_OUTCOME = SUCCESS | FAIL | RUNNING;
+export type TREE_OUTCOME = SUCCESS | FAIL | RUNNING;
 
 export type BehaviorTree3 = {
     nodes: unknown[];
@@ -11,24 +11,45 @@ export type BehaviorTree3 = {
 
     run(): undefined | TREE_OUTCOME;
 
-    setObject(object: Instance | undefined): void;
+    setObject(object?: Instance): void;
 
     clone(): BehaviorTree3;
 };
 
-export interface NodeParams {}
+export interface NodeParams<T = unknown> {
+    tree?: BehaviorTree3;
+    nodes?: Node<T>[];
+    count?: number;
+    weight?: number;
+    breakonfail?: boolean;
 
-type Node = {};
-
-export interface BehaviorTreeParams {
-    tree: unknown;
+    start?: (task: Node<T>, object: Instance) => void;
+    run?: (task: Node<T>, object: Instance) => void;
+    finish?: (task: Node<T>, status: TREE_OUTCOME) => void;
 }
+
+type Node<T> = NodeParams &
+    T & {
+        success(): void;
+    };
+
+export interface BehaviorTreeParams {}
 
 interface BehaviorTree3Constructor {
     readonly ClassName: 'BehaviorTree3';
     new (params: BehaviorTreeParams): BehaviorTree3;
 
-    Sequence(params: NodeParams): Node;
+    Sequence<T>(params: NodeParams): Node<T>;
+    Selector<T>(params: NodeParams): Node<T>;
+    Random<T>(params: NodeParams): Node<T>;
+
+    Succeed<T>(params: NodeParams): Node<T>;
+    Fail<T>(params: NodeParams): Node<T>;
+    Invert<T>(params: NodeParams): Node<T>;
+    Repeat<T>(params: NodeParams): Node<T>;
+
+    Task<T>(params: NodeParams): Node<T>;
+    Tree<T>(params: NodeParams): Node<T>;
 }
 
 interface BehaviorTreeCreatorConstructor {
