@@ -22,6 +22,7 @@
         "@rbxts/types": "^1.0.418"
     },
     "files": [
+        "index.lua",
         "index.d.ts",
         "BehaviorTree3.lua",
         "BehaviorTreeCreator.lua"
