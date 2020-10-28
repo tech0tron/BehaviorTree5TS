@@ -1,5 +1,5 @@
-local BehaviorTreeCreator = require(script.Parent.BehaviorTreeCreator)
-local BehaviorTree3 = require(script.Parent.BehaviorTree3)
+local BehaviorTreeCreator = require(script.BehaviorTreeCreator)
+local BehaviorTree3 = require(script.BehaviorTree3)
 
 return {
     BehaviorTreeCreator = BehaviorTreeCreator,

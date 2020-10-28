@@ -7,14 +7,14 @@ export const RUNNING = 3;
 
 export type TREE_OUTCOME = SUCCESS | FAIL | RUNNING;
 
-export type BehaviorTree3 = {
+export type BehaviorTree3<T = unknown> = {
     nodes: unknown[];
     index: number;
-    object: Instance | undefined;
+    object: T | undefined;
 
-    run(): undefined | TREE_OUTCOME;
+    run(...args: unknown[]): TREE_OUTCOME | undefined;
 
-    setObject(object?: Instance): void;
+    setObject(object?: T): void;
 
     clone(): BehaviorTree3;
 };
@@ -27,37 +27,39 @@ export interface NodeParams<T = unknown> {
     breakonfail?: boolean;
 
     module?: {
-        start?: (task: Node<T>, object: Instance) => void;
-        run?: (task: Node<T>, object: Instance) => TREE_OUTCOME;
-        finish?: (task: Node<T>, status: TREE_OUTCOME) => void;
+        start?: (object: T, ...args: unknown[]) => void;
+        run?: (object: T, ...args: unknown[]) => TREE_OUTCOME;
+        finish?: (object: T, status: TREE_OUTCOME, ...args: unknown[]) => void;
     };
 }
 
 type Node<T = unknown> = NodeParams & T;
 
-export interface BehaviorTreeParams {}
+export interface BehaviorTreeParams {
+    tree: Node;
+}
 
 interface BehaviorTree3Constructor {
     readonly ClassName: 'BehaviorTree3';
-    new (params: BehaviorTreeParams): BehaviorTree3;
+    new <T = unknown>(params: BehaviorTreeParams): BehaviorTree3<T>;
 
-    Sequence: (params: NodeParams) => Node;
-    Selector: (params: NodeParams) => Node;
-    Random: (params: NodeParams) => Node;
+    Sequence: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    Selector: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    Random: <T = unknown>(params: NodeParams<T>) => Node<T>;
 
-    Succeed: (params: NodeParams) => Node;
-    Fail: (params: NodeParams) => Node;
-    Invert: (params: NodeParams) => Node;
-    Repeat: (params: NodeParams) => Node;
+    Succeed: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    Fail: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    Invert: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    Repeat: <T = unknown>(params: NodeParams<T>) => Node<T>;
 
-    Task: (params: NodeParams) => Node;
-    Tree: (params: NodeParams) => Node;
+    Task: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    Tree: <T = unknown>(params: NodeParams<T>) => Node<T>;
 }
 
 interface BehaviorTreeCreatorConstructor {
     readonly ClassName: 'BehaviorTree3Creator';
 
-    Create(treeFolder: Folder, obj: Instance): BehaviorTree3 | undefined;
+    Create<T = unknown>(treeFolder: Folder, obj: T): BehaviorTree3<T> | undefined;
 
     SetTreeID(treeId: string, treeFolder: Folder): void;
 }

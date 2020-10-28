@@ -1,8 +1,8 @@
 {
     "name": "@rbxts/behavior-tree-3",
-    "version": "1.0.0-ts.1",
+    "version": "1.0.0-ts.2",
     "description": "Defaultio's BehaviorTree3 with types!",
-    "main": "index.lua",
+    "main": "init.lua",
     "types": "index.d.ts",
     "scripts": {},
     "repository": {
@@ -22,7 +22,7 @@
         "@rbxts/types": "^1.0.418"
     },
     "files": [
-        "index.lua",
+        "init.lua",
         "index.d.ts",
         "BehaviorTree3.lua",
         "BehaviorTreeCreator.lua"
