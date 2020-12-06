@@ -1,34 +1,32 @@
 import { BehaviorTree3, FAIL, RUNNING, SUCCESS, TREE_OUTCOME } from '@rbxts/behavior-tree-3';
 
 interface MyFirstInterface {
-    i?: number;
+    i: number | undefined;
 }
 
 const NewNode1 = BehaviorTree3.Task<MyFirstInterface>({
     // 'start' and 'finish' functions are optional. only "run" is required!
 
-    module: {
-        start: (object: MyFirstInterface, ...args: unknown[]) => {
-            object.i = 0;
-            print("I've prepped the task!");
-            print('I got some start data too: ' + args[0]);
-        },
+    start: (object: MyFirstInterface, ...args: unknown[]) => {
+        object.i = 0;
+        print("I've prepped the task!");
+        print('I got some start data too: ' + args[0]);
+    },
 
-        run: (object: MyFirstInterface) => {
-            object.i = (object.i as number) + 1;
-            if (object.i === 5) return SUCCESS;
-            else if (object.i > 5) return FAIL;
+    run: (object: MyFirstInterface) => {
+        object.i = (object.i as number) + 1;
+        if (object.i === 5) return SUCCESS;
+        else if (object.i > 5) return FAIL;
 
-            print('The task is still running...');
-            return RUNNING;
-        },
+        print('The task is still running...');
+        return RUNNING;
+    },
 
-        finish: (object: MyFirstInterface, status: TREE_OUTCOME) => {
-            object.i = undefined;
-            print("I'm done with the task! My outcome was: ");
-            if (status === SUCCESS) print('Success!');
-            else if (status === FAIL) print('Fail!');
-        }
+    finish: (object: MyFirstInterface, status: TREE_OUTCOME) => {
+        object.i = undefined;
+        print("I'm done with the task! My outcome was: ");
+        if (status === SUCCESS) print('Success!');
+        else if (status === FAIL) print('Fail!');
     }
 });
 
@@ -36,11 +34,9 @@ const myFirstTree = new BehaviorTree3<MyFirstInterface>({
     tree: NewNode1
 });
 
-myFirstTree.setObject({ i: undefined });
-
 let myFirstTreeStatus;
 do {
-    myFirstTreeStatus = myFirstTree.run('Some run data');
+    myFirstTreeStatus = myFirstTree.run({ i: undefined }, 'Some run data');
 } while (myFirstTreeStatus === RUNNING);
 
 const Sequence = BehaviorTree3.Sequence({
@@ -69,31 +65,25 @@ const Random = BehaviorTree3.Random({
 
 const node1 = BehaviorTree3.Task({
     weight: 10,
-    module: {
-        run: () => {
-            print('I am node1');
-            return SUCCESS;
-        }
+    run: () => {
+        print('I am node1');
+        return SUCCESS;
     }
 });
 
 const node2 = BehaviorTree3.Task({
     weight: 10,
-    module: {
-        run: () => {
-            print('I am node2');
-            return SUCCESS;
-        }
+    run: () => {
+        print('I am node2');
+        return SUCCESS;
     }
 });
 
 const node3 = BehaviorTree3.Task({
     weight: 200,
-    module: {
-        run: () => {
-            print(`I am node3`);
-            return SUCCESS;
-        }
+    run: () => {
+        print(`I am node3`);
+        return SUCCESS;
     }
 });
 
@@ -118,26 +108,20 @@ let RandomTree = new BehaviorTree3({
     })
 });
 
-const NewNode = BehaviorTree3.Task({ tree: RandomTree });
-
 print("let's test random!");
 
 let x = 0;
 while (x < 20) {
-    RandomTree.run();
+    RandomTree.run({});
     wait(0.1);
     x++;
 }
 
-RandomTree.setObject();
-
 const crazyNode = BehaviorTree3.Task({
     weight: 200,
-    module: {
-        run: () => {
-            if (math.random(1, 10) === 1) return FAIL;
-            else return SUCCESS;
-        }
+    run: () => {
+        if (math.random(1, 10) === 1) return FAIL;
+        else return SUCCESS;
     }
 });
 
@@ -145,11 +129,9 @@ const sequenceTree = new BehaviorTree3({
     tree: BehaviorTree3.Sequence({ nodes: [node1, node2, crazyNode, node3] })
 });
 
-sequenceTree.setObject({} as unknown);
-
 print('boring tree forever now!');
 
 while (true) {
-    print(sequenceTree.run());
+    print(sequenceTree.run({}));
     wait(1);
 }

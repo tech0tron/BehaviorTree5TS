@@ -24,10 +24,10 @@ export type BehaviorTree3<T = unknown> = {
     /** Run the behavior tree with optional arguments that are passed to all nodes.
      * May be called multiple times when TREE_OUTCOME that is returned is RUNNING.
      */
-    run(...args: unknown[]): TREE_OUTCOME | undefined;
+    run(obj: T, ...args: unknown[]): TREE_OUTCOME | undefined;
 
-    /** Set the shared object used by the behavior tree. */
-    setObject(object?: T): void;
+    /** Calls finish(...args) on the running task of the tree and sets the tree index back to 1. */
+    abort(...args: unknown[]): void;
 
     /** Clone the behavior tree. */
     clone(): BehaviorTree3;
@@ -43,14 +43,18 @@ export interface NodeParams<T = unknown> {
     weight?: number;
     breakonfail?: boolean;
 
-    module?: {
-        start?: (object: T, ...args: unknown[]) => void;
-        run?: (object: T, ...args: unknown[]) => TREE_OUTCOME;
-        finish?: (object: T, status: TREE_OUTCOME, ...args: unknown[]) => void;
-    };
+    start?: (object: T, ...args: unknown[]) => void;
+    run?: (object: T, ...args: unknown[]) => TREE_OUTCOME;
+    finish?: (object: T, status: TREE_OUTCOME, ...args: unknown[]) => void;
 }
 
 type Node<T = unknown> = NodeParams & T;
+type TaskNodeParams<T = unknown> = NodeParams<T> & {
+    run: (object: T, ...args: unknown[]) => TREE_OUTCOME;
+};
+type TreeNodeParams<T = unknown> = NodeParams<T> & {
+    tree: BehaviorTree3;
+};
 
 /** The parameter object passed in when a tree is created. */
 export interface BehaviorTreeParams {
@@ -65,14 +69,16 @@ interface BehaviorTree3Constructor {
     Sequence: <T = unknown>(params: NodeParams<T>) => Node<T>;
     Selector: <T = unknown>(params: NodeParams<T>) => Node<T>;
     Random: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    While: <T = unknown>(params: NodeParams<T>) => Node<T>;
 
     Succeed: <T = unknown>(params: NodeParams<T>) => Node<T>;
     Fail: <T = unknown>(params: NodeParams<T>) => Node<T>;
     Invert: <T = unknown>(params: NodeParams<T>) => Node<T>;
     Repeat: <T = unknown>(params: NodeParams<T>) => Node<T>;
 
-    Task: <T = unknown>(params: NodeParams<T>) => Node<T>;
-    Tree: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    Task: <T = unknown>(params: TaskNodeParams<T>) => Node<T>;
+    Tree: <T = unknown>(params: TreeNodeParams<T>) => Node<T>;
+    ['Blackboard Query']: <T = unknown>(params: NodeParams<T>) => Node<T>;
 }
 
 /** Static methods found on the exported BehaviorTree3Creator object*/
@@ -80,7 +86,10 @@ interface BehaviorTreeCreatorConstructor {
     readonly ClassName: 'BehaviorTree3Creator';
 
     /** Create a behavior tree from a folder from the behavior tree plugin and an object. */
-    Create<T = unknown>(treeFolder: Folder, obj: T): BehaviorTree3<T> | undefined;
+    Create<T = unknown>(treeFolder: Folder): BehaviorTree3<T> | undefined;
+
+    /** Create a shared blackboard with an index and blackboard object. */
+    RegisterSharedBlackboard(index: string, tab: Object): void;
 
     /** Used to set an identifier for a tree. */
     SetTreeID(treeId: string, treeFolder: Folder): void;
