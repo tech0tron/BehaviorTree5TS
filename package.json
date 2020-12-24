@@ -1,6 +1,6 @@
 {
     "name": "@rbxts/behavior-tree-3",
-    "version": "2.0.1-ts.0",
+    "version": "2.0.1-ts.2",
     "description": "Defaultio's BehaviorTree3 with types!",
     "main": "init.lua",
     "types": "index.d.ts",
@@ -19,7 +19,7 @@
         "access": "public"
     },
     "devDependencies": {
-        "@rbxts/types": "^1.0.428"
+        "@rbxts/types": "^1.0.431"
     },
     "files": [
         "init.lua",

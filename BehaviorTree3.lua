@@ -552,7 +552,7 @@ function TreeProto:run(obj,...)
 		local node = nodes[index]
 
 		-- Debug
-		if IsStudio then
+        if IsStudio and self.folder then
 			DebugEntityNode.Value = node.nodefolder
 		end		
 		--
