@@ -10,7 +10,7 @@ const NewNode1 = BehaviorTree3.Task<MyFirstInterface>({
     start: (object: MyFirstInterface, ...args: unknown[]) => {
         object.i = 0;
         print("I've prepped the task!");
-        print('I got some start data too: ' + args[0]);
+        print('I got some start data too: ' + (args as [string])[0]);
     },
 
     run: (object: MyFirstInterface) => {
@@ -35,8 +35,10 @@ const myFirstTree = new BehaviorTree3<MyFirstInterface>({
 });
 
 let myFirstTreeStatus;
+const obj = { i: undefined };
 do {
-    myFirstTreeStatus = myFirstTree.run({ i: undefined }, 'Some run data');
+    print(obj);
+    myFirstTreeStatus = myFirstTree.run(obj, 'Some run data');
 } while (myFirstTreeStatus === RUNNING);
 
 const Sequence = BehaviorTree3.Sequence({
@@ -132,6 +134,6 @@ const sequenceTree = new BehaviorTree3({
 print('boring tree forever now!');
 
 while (true) {
-    print(sequenceTree.run({}));
+    print(sequenceTree.run(obj));
     wait(1);
 }
