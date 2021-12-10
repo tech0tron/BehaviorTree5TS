@@ -89,7 +89,7 @@ interface BehaviorTreeCreatorConstructor {
     Create<T = unknown>(treeFolder: Folder): BehaviorTree3<T> | undefined;
 
     /** Create a shared blackboard with an index and blackboard object. */
-    RegisterSharedBlackboard(index: string, tab: Object): void;
+    RegisterSharedBlackboard(index: string, tab: object): void;
 
     /** Used to set an identifier for a tree. */
     SetTreeID(treeId: string, treeFolder: Folder): void;
