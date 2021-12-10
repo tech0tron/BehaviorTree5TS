@@ -1,5 +1,7 @@
 # BehaviorTree3TS
 
+[![npm version](https://badge.fury.io/js/@rbxts%2Fbehavior-tree-3.svg)](https://badge.fury.io/js/@rbxts%2Fbehavior-tree-3)
+
 This module is a fork of Defaultio's BehaviorTree3 which is a fork of BehaviorTrees2 by oniich_n.
 
 BehaviorTree3TS is a @rbxts package meant to be used with https://roblox-ts.com and includes types for easy inclusion into any roblox-ts project.
