@@ -27,9 +27,6 @@ export interface BehaviorTree3<O extends object> {
     /** Calls finish(...args) on the running task of the tree and sets the tree index back to 1. */
     abort(...args: unknown[]): void;
     Abort: this["abort"];
-
-    /** Clone the behavior tree. */
-    clone(): BehaviorTree3<O>;
 }
 
 export interface Node<O extends object, T extends string = string, P extends object = {}> {
