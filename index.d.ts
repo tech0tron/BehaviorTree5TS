@@ -37,7 +37,7 @@ export type BehaviorTree3<T = unknown> = {
  * TODO: Create parameters specific to each type of node.
  */
 export interface NodeParams<T = unknown> {
-    tree?: BehaviorTree3;
+    tree?: BehaviorTree3<T>;
     nodes?: Node<T>[];
     count?: number;
     weight?: number;
@@ -48,7 +48,7 @@ export interface NodeParams<T = unknown> {
     finish?: (object: T, status: TREE_OUTCOME, ...args: unknown[]) => void;
 }
 
-type Node<T = unknown> = NodeParams & T;
+type Node<T = unknown> = NodeParams<T>;
 type TaskNodeParams<T = unknown> = NodeParams<T> & {
     run: (object: T, ...args: unknown[]) => TREE_OUTCOME;
 };
@@ -57,14 +57,14 @@ type TreeNodeParams<T = unknown> = NodeParams<T> & {
 };
 
 /** The parameter object passed in when a tree is created. */
-export interface BehaviorTreeParams {
-    tree: Node;
+export interface BehaviorTreeParams<T> {
+    tree: Node<T>;
 }
 
 /** Constructor and static methods found on the exported BehaviorTree3 module. */
 interface BehaviorTree3Constructor {
     readonly ClassName: 'BehaviorTree3';
-    new <T = unknown>(params: BehaviorTreeParams): BehaviorTree3<T>;
+    new <T = unknown>(params: BehaviorTreeParams<T>): BehaviorTree3<T>;
 
     Sequence: <T = unknown>(params: NodeParams<T>) => Node<T>;
     Selector: <T = unknown>(params: NodeParams<T>) => Node<T>;
