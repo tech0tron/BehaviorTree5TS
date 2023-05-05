@@ -63,7 +63,7 @@ export interface BehaviorTreeParams<T> {
 
 /** Constructor and static methods found on the exported BehaviorTree3 module. */
 interface BehaviorTree3Constructor {
-    readonly ClassName: 'BehaviorTree3';
+    readonly ClassName: "BehaviorTree3";
     new <T = unknown>(params: BehaviorTreeParams<T>): BehaviorTree3<T>;
 
     Sequence: <T = unknown>(params: NodeParams<T>) => Node<T>;
@@ -78,12 +78,12 @@ interface BehaviorTree3Constructor {
 
     Task: <T = unknown>(params: TaskNodeParams<T>) => Node<T>;
     Tree: <T = unknown>(params: TreeNodeParams<T>) => Node<T>;
-    ['Blackboard Query']: <T = unknown>(params: NodeParams<T>) => Node<T>;
+    ["Blackboard Query"]: <T = unknown>(params: NodeParams<T>) => Node<T>;
 }
 
 /** Static methods found on the exported BehaviorTree3Creator object*/
 interface BehaviorTreeCreatorConstructor {
-    readonly ClassName: 'BehaviorTree3Creator';
+    readonly ClassName: "BehaviorTree3Creator";
 
     /** Create a behavior tree from a folder from the behavior tree plugin and an object. */
     Create<T = unknown>(treeFolder: Folder): BehaviorTree3<T> | undefined;
