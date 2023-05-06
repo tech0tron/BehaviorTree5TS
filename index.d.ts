@@ -92,7 +92,7 @@ export interface WhileNodeParams<O extends object> extends NodeParams {
     count?: number;
 }
 
-type NonEmptyArray<T> = [T, ...T[]];
+export type NonEmptyArray<T> = [T, ...T[]];
 
 export interface SequenceNodeParams<O extends object> extends NodeParams {
     nodes: NonEmptyArray<Node<O>>;
